@@ -10,7 +10,7 @@ const app = express();
 // Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
 // Connect to mongoose
-mongoose.connect('mongodb://10.22.1.139/projectNode',{useCreateIndex: true, useNewUrlParser: true})
+mongoose.connect('mongodb://localhost/projectNode',{useCreateIndex: true, useNewUrlParser: true})
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 
