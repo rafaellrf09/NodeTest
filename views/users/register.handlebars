@@ -2,22 +2,22 @@
   <div class="col-md-6 mx-auto">
     <div class="card card-body">
       <h3 class="text-center">Register</h3>
-        <form>
+        <form action="/users/register" method="post">
           <div class="form-group">
             <label for="nome">Nome:</label>
-            <input type="text" name="nome" autocomplete=""class="form-control" required>
+            <input type="text" name="name" value="{{name}}" autocomplete=""class="form-control" required>
           </div>
           <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" name="email" class="form-control" required>
+            <input type="email" name="email" value="{{email}}" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" name="password" class="form-control" required>
+            <input type="password" name="password" value="{{password}}" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="password2">Confirmar Password:</label>
-            <input type="password" name="password2" class="form-control" required>
+            <input type="password" name="password2" value="{{password2}}" class="form-control" required>
           </div>
           <button type="submit" class="btn btn-success">Salvar</button>
         </form>
