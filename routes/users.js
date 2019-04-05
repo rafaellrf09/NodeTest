@@ -21,7 +21,7 @@ router.get('/register',(req,res) => {
 //Login form post
 router.post('/login', (req, res, next) => {
   passport.authenticate('local',{
-    successRedirect: '/ideas',
+    successRedirect: '/',
     failureRedirect: '/users/login',
     failureFlash: true,
   })(req, res, next);
@@ -73,6 +73,13 @@ router.post('/register', (req,res) => {
       }
     })
   }
+});
+
+//Logout users
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('success_msg', 'Você está deslogado.')
+  res.redirect('/users/login')
 })
 
 module.exports = router;

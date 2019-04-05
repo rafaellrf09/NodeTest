@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose');
+const {estaAutenticado} = require('../helpers/auth')
+
 
 
 // Load Idea Model
@@ -8,8 +10,8 @@ require('../models/Idea');
 const Idea = mongoose.model('ideas');
 
 // Idea Index Page
-router.get('/', (req, res) => {
-  Idea.find({})
+router.get('/', estaAutenticado,(req, res) => {
+  Idea.find({user: req.user.id})
     .sort({date:'desc'})
     .then(ideas => {
       res.render('ideas/index', {
@@ -19,24 +21,29 @@ router.get('/', (req, res) => {
 });
 
 // Add Idea Form
-router.get('/add', (req, res) => {
+router.get('/add', estaAutenticado,(req, res) => {
   res.render('ideas/add');
 });
 
 // Edit Idea Form
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', estaAutenticado,(req, res) => {
   Idea.findOne({
     _id: req.params.id
   })
   .then(idea => {
-    res.render('ideas/edit', {
-      idea:idea
-    });
+    if(idea.user != req.user.id){
+      req.flash('error_msg',"Não está autorizado.")
+      res.redirect('/ideas')
+    }else{
+      res.render('ideas/edit', {
+        idea:idea
+      });
+    }
   });
 });
 
 // Process Form
-router.post('/', (req, res) => {
+router.post('/', estaAutenticado,(req, res) => {
   let errors = [];
 
   if(!req.body.title){
@@ -55,7 +62,8 @@ router.post('/', (req, res) => {
   } else {
     const newUser = {
       title: req.body.title,
-      details: req.body.details
+      details: req.body.details,
+      user: req.user.id
     }
     new Idea(newUser)
       .save()
@@ -67,7 +75,7 @@ router.post('/', (req, res) => {
 });
 
 // Edit Form process
-router.put('/:id', (req, res) => {
+router.put('/:id', estaAutenticado,(req, res) => {
   Idea.findOne({
     _id: req.params.id
   })
@@ -85,7 +93,7 @@ router.put('/:id', (req, res) => {
 });
 
 // Delete Idea
-router.delete('/:id', (req, res) => {
+router.delete('/:id', estaAutenticado,(req, res) => {
   Idea.remove({_id: req.params.id})
     .then(() => {
       req.flash('success_msg','Ideia removida.')

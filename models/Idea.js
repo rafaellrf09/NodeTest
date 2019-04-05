@@ -11,6 +11,10 @@ const IdeaSchema = new Schema({
     type: String,
     required: true
   },
+  user:{
+    type: String,
+    require: true
+  },
   date: {
     type: Date,
     default: Date.now
