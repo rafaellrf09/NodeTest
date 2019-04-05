@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport')
+const {estaAutenticado} = require('./helpers/auth')
 const app = express();
 
 //load routes
@@ -69,6 +70,10 @@ app.use(function(req, res, next){
 
 // Index Route
 app.get('/', (req, res) => {
+  res.render('users/login')
+});
+
+app.get('/inicial', estaAutenticado,(req, res) => {
   const title = 'Bem Vindo';
   res.render('index', {
     title: title
